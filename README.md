@@ -1,1 +1,4 @@
 # EmotionDetectionApp
+
+----------------------
+## Installation Guide
