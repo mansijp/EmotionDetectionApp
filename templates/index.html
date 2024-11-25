@@ -6,7 +6,7 @@
     <title>Emotion Detection</title>
     <style>
         #video-container {
-            width: 100%;
+            width: 50%;
             text-align: center;
         }
         #start-button, #stop-button {
@@ -15,21 +15,91 @@
             font-size: 16px;
             cursor: pointer;
         }
+        body {
+            display: grid;
+            place-items: center;      /* Centers both horizontally and vertically */
+            height: 5vh;            /* Full viewport height */
+            margin: 0;                /* Removes default margin */
+            background: #cabed1;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
     </style>
 </head>
 <body>
-    <h1 style="text-align: center;">Emotion Detection Using AI</h1>
+    <h1 style="text-align: center;">Emotion Detection Application</h1>
     
-    <div style="text-align: center;">
-        <button id="start-button" onclick="startStream()">Start Webcam</button>
-        <button id="stop-button" onclick="stopStream()">Stop Webcam</button>
+    <div style="text-align: center; ">
+        <button id="start-button" onclick="startStream()" style ="border: 5px solid #b262dd; border-radius: 30px;">Start Webcam</button>
+        <button id="stop-button" onclick="stopStream()" style ="border: 5px solid #b262dd; border-radius: 30px;">Stop Webcam</button>
+    </div>
+
+    <div style="font-size:14px;" id="happy-count">
+        Happy Count: <span id="happy-count-value">0</span>
+    </div>
+    <div style="font-size:14px;" id="sad-count">
+        Sad Count: <span id="sad-count-value">0</span>
+    </div>
+    <div style="font-size:14px;" id="shock-count">
+        Shock Count: <span id="shock-count-value">0</span>
+    </div>
+    <div style="font-size:14px;" id="neutral-count">
+        Neutral Count: <span id="neutral-count-value">0</span>
+    </div>
+    <div style="font-size:14px;" id="angry-count">
+        Angry Count: <span id="angry-count-value">0</span>
     </div>
     
     <div id="video-container">
-        <img src="{{ url_for('video_feed') }}" id="video-stream" style="width: 80%; border: 1px solid #ddd;">
+        <img src="{{ url_for('video_feed') }}" id="video-stream" style="width: 80%; border: 5px solid #b262dd; border-radius: 30px;">
     </div>
 
     <script>
+//happy
+        function fetchHappyCount() {
+            fetch('/happy_count')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('happy-count-value').innerText = data.happy_count;
+                });
+        }
+        setInterval(fetchHappyCount, 1000);
+//sad
+        function fetchSadCount() {
+            fetch('/sad_count')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('sad-count-value').innerText = data.sad_count;
+                });
+        }
+        setInterval(fetchSadCount, 1000);
+//shock
+        function fetchShockCount() {
+            fetch('/shock_count')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('shock-count-value').innerText = data.shock_count;
+                });
+        }
+        setInterval(fetchShockCount, 1000);
+//neutral
+        function fetchNeutralCount() {
+            fetch('/neutral_count')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('neutral-count-value').innerText = data.neutral_count;
+                });
+        }
+        setInterval(fetchNeutralCount, 1000);
+//angry
+        function fetchAngryCount() {
+            fetch('/angry_count')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('angry-count-value').innerText = data.angry_count;
+                });
+        }
+        setInterval(fetchAngryCount, 1000);
+
         function startStream() {
             fetch('/start')
                 .then(response => response.text())
