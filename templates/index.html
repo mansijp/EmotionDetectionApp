@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Detection</title>
+    <style>
+        #video-container {
+            width: 100%;
+            text-align: center;
+        }
+        #start-button, #stop-button {
+            margin: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Emotion Detection Using AI</h1>
+    
+    <div style="text-align: center;">
+        <button id="start-button" onclick="startStream()">Start Webcam</button>
+        <button id="stop-button" onclick="stopStream()">Stop Webcam</button>
+    </div>
+    
+    <div id="video-container">
+        <img src="{{ url_for('video_feed') }}" id="video-stream" style="width: 80%; border: 1px solid #ddd;">
+    </div>
+
+    <script>
+        function startStream() {
+            fetch('/start')
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data);
+                    document.getElementById('start-button').disabled = true;
+                    document.getElementById('stop-button').disabled = false;
+                });
+        }
+
+        function stopStream() {
+            fetch('/stop')
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data);
+                    document.getElementById('start-button').disabled = false;
+                    document.getElementById('stop-button').disabled = true;
+                });
+        }
+    </script>
+</body>
+</html>
