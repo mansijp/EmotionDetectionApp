@@ -1,60 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emotion Detection</title>
+    <title>Emotion Detection App</title>
     <style>
         #video-container {
-            width: 50%;
+            width: 100%;
             text-align: center;
         }
+
         #start-button, #stop-button {
             margin: 20px;
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
         }
+
         body {
             display: grid;
-            place-items: center;      /* Centers both horizontally and vertically */
-            height: 5vh;            /* Full viewport height */
-            margin: 0;                /* Removes default margin */
+            place-items: center;
+            /* Centers both horizontally and vertically */
+            height: 2vh;
+            /* Full viewport height */
+            margin: 0;
+            /* Removes default margin */
             background: #cabed1;
-            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #video-table-container {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table,
+        th,
+        td {
+            border: 2px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        #emotion-table-container {
+            width: 30%;
+            padding: 20px;
         }
     </style>
 </head>
+
 <body>
     <h1 style="text-align: center;">Emotion Detection Application</h1>
-    
+
     <div style="text-align: center; ">
-        <button id="start-button" onclick="startStream()" style ="border: 5px solid #b262dd; border-radius: 30px;">Start Webcam</button>
-        <button id="stop-button" onclick="stopStream()" style ="border: 5px solid #b262dd; border-radius: 30px;">Stop Webcam</button>
+        <button id="start-button" onclick="startStream()" style="border: 5px solid #b262dd; border-radius: 30px;">Start
+            Webcam</button>
+        <button id="stop-button" onclick="stopStream()" style="border: 5px solid #b262dd; border-radius: 30px;">Stop
+            Webcam</button>
     </div>
-
-    <div style="font-size:14px;" id="happy-count">
-        Happy Count: <span id="happy-count-value">0</span>
+    <div id="video-table-container">
+        <div id="video-container">
+            <img src="{{ url_for('video_feed') }}" id="video-stream"
+                style="width: 80%; border: 5px solid #b262dd; border-radius: 30px;">
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Emotion</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Happy</td>
+                    <td><span id="happy-count-value">0</span></td>
+                </tr>
+                <tr>
+                    <td>Sad</td>
+                    <td><span id="sad-count-value">0</span></td>
+                </tr>
+                <tr>
+                    <td>Shock</td>
+                    <td><span id="shock-count-value">0</span></td>
+                </tr>
+                <tr>
+                    <td>Neutral</td>
+                    <td><span id="neutral-count-value">0</span></td>
+                </tr>
+                <tr>
+                    <td>Angry</td>
+                    <td><span id="angry-count-value">0</span></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <div style="font-size:14px;" id="sad-count">
-        Sad Count: <span id="sad-count-value">0</span>
-    </div>
-    <div style="font-size:14px;" id="shock-count">
-        Shock Count: <span id="shock-count-value">0</span>
-    </div>
-    <div style="font-size:14px;" id="neutral-count">
-        Neutral Count: <span id="neutral-count-value">0</span>
-    </div>
-    <div style="font-size:14px;" id="angry-count">
-        Angry Count: <span id="angry-count-value">0</span>
-    </div>
-    
-    <div id="video-container">
-        <img src="{{ url_for('video_feed') }}" id="video-stream" style="width: 80%; border: 5px solid #b262dd; border-radius: 30px;">
-    </div>
-
     <script>
-//happy
+        //happy
         function fetchHappyCount() {
             fetch('/happy_count')
                 .then(response => response.json())
@@ -63,7 +119,7 @@
                 });
         }
         setInterval(fetchHappyCount, 1000);
-//sad
+        //sad
         function fetchSadCount() {
             fetch('/sad_count')
                 .then(response => response.json())
@@ -72,7 +128,7 @@
                 });
         }
         setInterval(fetchSadCount, 1000);
-//shock
+        //shock
         function fetchShockCount() {
             fetch('/shock_count')
                 .then(response => response.json())
@@ -81,7 +137,7 @@
                 });
         }
         setInterval(fetchShockCount, 1000);
-//neutral
+        //neutral
         function fetchNeutralCount() {
             fetch('/neutral_count')
                 .then(response => response.json())
@@ -90,7 +146,7 @@
                 });
         }
         setInterval(fetchNeutralCount, 1000);
-//angry
+        //angry
         function fetchAngryCount() {
             fetch('/angry_count')
                 .then(response => response.json())
@@ -104,7 +160,6 @@
             fetch('/start')
                 .then(response => response.text())
                 .then(data => {
-                    console.log(data);
                     document.getElementById('start-button').disabled = true;
                     document.getElementById('stop-button').disabled = false;
                 });
@@ -114,11 +169,11 @@
             fetch('/stop')
                 .then(response => response.text())
                 .then(data => {
-                    console.log(data);
                     document.getElementById('start-button').disabled = false;
                     document.getElementById('stop-button').disabled = true;
                 });
         }
     </script>
 </body>
+
 </html>
