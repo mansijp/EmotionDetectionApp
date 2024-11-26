@@ -21,11 +21,8 @@
         body {
             display: grid;
             place-items: center;
-            /* Centers both horizontally and vertically */
             height: 2vh;
-            /* Full viewport height */
             margin: 0;
-            /* Removes default margin */
             background: #cabed1;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
@@ -110,6 +107,7 @@
         </table>
     </div>
     <script>
+        //Fetches emotions count value from the Flask backend every second and updates table
         //happy
         function fetchHappyCount() {
             fetch('/happy_count')
@@ -156,6 +154,7 @@
         }
         setInterval(fetchAngryCount, 1000);
 
+        //Send request to Flask endpoint to begin and stop video streaming
         function startStream() {
             fetch('/start')
                 .then(response => response.text())
